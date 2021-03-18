@@ -66,7 +66,27 @@ Spring的核心容器；Spring的AOP模块；数据访问与集成；Web与远�
 
 ### 通过XML装配bean；
 
-首先需要创建一个XML文件，并且以<beans>为根；
+首先需要创建一个XML文件，并且以<beans>为根，装配bean的XML元素包含在spring-beans模式之中；
+
+<bean>元素：<bean id = "xxx" class = "类的全限定名">，如果没有明确ID属性，默认ID为“类全限定名#0”；
+
+#### 构造器注入
+
+构造器注入bean使用<constructor-arg ref = "xxx">元素作为bean元素的子元素；c-命名空间注入<c:参数名/_参数索引-ref = "xxx">，作为bean元素一个属性；
+
+注：使用命名空间需要在XML中进行声明；
+
+将字面量注入到构造器中：<constructor-arg value = "">元素；
+
+装配集合：<constructor-arg><null/></constructor-arg>采用<null>元素设为空值，在注入期可以正常使用，但是在调用时会报空指针异常；<list>作为<constructor-arg>的子元素，<value>指定集合中的每个元素，可以使用<ref>元素代替<value>；同样可以使用<set>元素；在这种情况下<constructor-arg>比c命名空间更有优势； 
+
+#### 设置属性
+
+<property name = "属性名" ref = "依赖类">元素为属性提供的功能与<constructor-arg>元素是一样，类似的也有p-命名空间，所遵循规则与c-命名空间相同；
+
+将字面量注入属性中：<property name = "属性名" value = "赋值">，可以采用p-命名空间装配，遵循规则与c-命名空间相同；
+
+
 
 
 
