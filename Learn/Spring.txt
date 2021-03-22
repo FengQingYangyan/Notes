@@ -1,6 +1,6 @@
 # Spring核心
 
-## Spring概览
+## 第一章 Spring概览
 
 ### Spring容器
 
@@ -44,7 +44,7 @@ XmlWebApplicationContext：从Web应用下的一个或多个XML配置文件中�
 
 Spring的核心容器；Spring的AOP模块；数据访问与集成；Web与远程调试；Instrumentation；测试
 
-## 装配Bean
+## 第二章 装配Bean
 
 三种装配机制：在XML中进行显式配置；在Java中进行显式配置；隐式的bean发现机制和自动装配；
 
@@ -85,3 +85,36 @@ Spring的核心容器；Spring的AOP模块；数据访问与集成；Web与远�
 <property name = "属性名" ref = "依赖类">元素为属性提供的功能与<constructor-arg>元素是一样，类似的也有p-命名空间，所遵循规则与c-命名空间相同；
 
 将字面量注入属性中：<property name = "属性名" value = "赋值">，可以采用p-命名空间装配，遵循规则与c-命名空间相同；
+
+### 导入和混合配置
+
+#### 在JavaConfig中引入XML配置
+
+通过@Import({配置类，配置类})注解导入另一个JavaConfig；
+
+通过@ImportResourece(xml文件)导入XML配置；
+
+#### 在XML中引入JavaConfig
+
+<import resource = "xml文件"/>标签引入其他的xml文件；
+
+采用<bean class = "配置类"/>标签引入JavaConfig类；
+
+## 第四章 什么是面向切面编程
+
+### AOP术语
+
+通知：前置通知，后置通知，返回通知，异常通知，环绕通知；连接点；切点；切面；引入；织入
+
+### Spring提供的4类AOP支持
+
+基于代理的经典Spring AOP；
+
+纯POJO切面；
+
+@AspectJ注解驱动的切面；
+
+注入式AspectJ切面（使用于Spring各版本）；
+
+
+
