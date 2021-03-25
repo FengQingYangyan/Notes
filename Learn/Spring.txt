@@ -140,11 +140,74 @@ execution(返回类型 方法所属类.方法(任意参数)) and bean ('类名')
 
 在使用Aspect注解后，并不会被解析，也不会创建将其转化为切面的代理；
 
-#### 有两种方式进行自动代理：
+#### 自动代理的两种方式
 
 1、在JavaConfig中，使用@EnableAspectJAutoProxy注解启动自动代理功能；
 
 2、在XML中，使用Spring aop命名空间中的<aop:aspectj-autoproxy />元素；
 
 之后自动代理会为使用@Aspect注解的bean创建一个代理；
+
+#### 创建环绕通知
+
+@Around注解：表明该方法为环绕通知；但是使用该注解时，需要在注解方法上传入ProceedingJoinPoint的proceed()方法，同时需要的点去调用它；
+
+#### 处理通知中的参数
+
+在指示器中添加 ”&& args(指定参数)“，表明传递给切点的参数也会传递到通知中去，并且切点定义中参数与切点方法中的参数名称要保持一致，只有这样才能确保参数从切点到通知方法的转移；
+
+#### 通过注解引入新功能
+
+@DeclareParents注解：由三部分组成
+
+@DeclareParents(value = "要引入的bean(哪个地方在使用该注解标注的属性)"，defaultImpl = "为引入功能提供实现的类(实现类)")
+
+value属性：要引入的bean(哪个地方在使用该注解标注的属性)；
+
+defaultImpl属性：为引入接口提供实现的类(实现类)；
+
+注解标注的属性：表明要引入哪个接口；
+
+### 在XML中声明切面
+
+<aop:config>
+
+​	<aop:aspect ref = "audience">
+
+​		<aop:before pointcut = "切点表达式" method = "通知方法" />
+
+​		<aop:after pointcut = "切点表达式" method = "通知方法" />
+
+​	</aop:aspect>
+
+</aop:config>
+
+在XML中配置切点表达式：
+
+<aop: pointcut  id = "***" expression = "切点表达式" />
+
+配置后使用：
+
+<aop:before point-ref = "id">
+
+声明环绕通知：
+
+<aop: around pointcut-ref = "id" method = "环绕通知">
+
+为通知传递参数：与采用注解的方式仅仅区别在切点表达式使用and关键字而不是&&；
+
+通过切面引入新功能：
+<aop:aspect>
+
+​	<aop: declare-parents
+
+​		type-matching = "要引入的bean(哪个地方在使用该注解标注的属性)"
+
+​		implement-interface = "表明要引入哪个接口"
+
+​		default-impl = "实现类"
+
+​	/>
+
+</aop:aspect>
 
