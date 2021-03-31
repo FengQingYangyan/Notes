@@ -24,5 +24,37 @@
 
 ​		当DispatcherServlet知道由哪个视图渲染结果，那请求的任务基本上也就完成了，最后就是视图的实现（6），在这里它交付模型数据。请求的任务也就完成了。视图使用模型数据渲染输出，这个输出会通过响应对象传递给客户端（7）。
 
+#### 搭建Spring MVC
 
+##### 配置DispatcherServlet
+
+​		继承AbstractAnnotationCongfigDIspatcherServletInitializer的任意类都会自动配置DispatcherServlet和应用上下文，Spring的应用上下文会位于应用程序的Servlet上下文之中，同时将该方案作为传统的web.xml方式的代替方案。
+
+重写getServletMapping()，将路径映射到DispatcherServler上。
+
+##### 两个应用上下文之间的故事
+
+​		当DispatcherServlet启动的时候，会创建Spring应用上下文，并加载配置文件或配置类中声明的bean，重写getServletConfigClasses()，当DispatcherServlet加载应用上下文时，使用该方法中返回的配置类；
+
+​		但是在Spring Web中，通常还会有另一个应用上下文，是由ContextLoaderListener创建的，我们希望DispatcherServlet加载Web组件的bean，如控制器、视图解析器以及处理器映射，而ContextLoaderListener加载应用中的其他bean。这些bean通常是驱动应用后端的中间层和数据层组件。
+
+##### 启用Spring MVC
+
+采用@EnableWebMvc注解来启用Spring MVC，但是需要解决以下问题：
+
+1、没有配置视图解析器。这种情况下，Spring默认使用BeanNameViewResolver，这个视图解析器会根据查找ID与视图名称匹配的bean，并且查找的bean要实现View接口。
+
+2、没有启动组件扫描，Spring只能找到显式声明在配置类中的控制器。
+
+3、DispatcherServlet会映射到默认的Servlet，因此会处理所有的请求，包括对静态数据的请求。
+
+为解决以上问题，需要在WebConfig中加上一些配置
+
+1、添加@ComponentScan注解；
+
+2、添加ViewResolver bean。更具体的讲，是InternalResourceViewResolver。
+
+3、继承WebMvcConfigureAdapter并重写configureDefaultServlerHandling()方法。通过调用DefaultServletHandlerConfigurer的enable()方法，我们要求DispatcherServlet将对静态资源的请求转发到Servlet容器默认的Servlet上，而不是使用DispatcherServlet本身来处理此类请求。
+
+### 编写基本的控制器
 
