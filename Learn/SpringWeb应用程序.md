@@ -58,3 +58,19 @@
 
 ### 编写基本的控制器
 
+@Controller注解用来声明控制器，但是该注解只是为了表意上好一些，其实用@Component注解是相同的；
+
+@RequestMapping(value = "/", method = GET)注解：该注解定义在方法上，其中value属性指定了这个方法所要处理的请求路径，method属性表示它所处理的请求为HTTP GET请求；
+
+#### 测试控制器
+
+MockMvc mock = standaloneSetup(controller).build()
+
+传递一个controller到setup中，再调用build()方法来构建MockMvc实例，然后使用该实例来执行请求。
+
+#### 定义类级别的请求处理
+
+@RequestMapping("/")：定义在类上，将控制器映射在控制器上，表示会应用到该控制器的所有方法上。
+
+@RequestMapping(method = GET)：定义在方法上，表明该方法会处理对“/”路径的请求。
+
