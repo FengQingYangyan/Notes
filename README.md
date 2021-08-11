@@ -15,3 +15,7 @@
 4.16
 
 Develop a technical learning plan：粗略制定技术学习计划 
+
+8.11
+
+将最近一段时间的学习笔记记录
